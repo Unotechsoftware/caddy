@@ -25,8 +25,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/caddyserver/caddy/caddytls"
-	"github.com/caddyserver/caddy/telemetry"
+	"github.com/Unotechsoftware/caddy/caddytls"
+	"github.com/Unotechsoftware/caddy/telemetry"
 )
 
 // tlsHandler is a http.Handler that will inject a value

@@ -19,8 +19,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/caddyserver/caddy"
-	"github.com/caddyserver/caddy/caddyhttp/httpserver"
+	"github.com/Unotechsoftware/caddy"
+	"github.com/Unotechsoftware/caddy/caddyhttp/httpserver"
 )
 
 func TestSetup(t *testing.T) {

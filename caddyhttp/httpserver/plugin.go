@@ -27,11 +27,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/caddyserver/caddy"
-	"github.com/caddyserver/caddy/caddyfile"
-	"github.com/caddyserver/caddy/caddyhttp/staticfiles"
-	"github.com/caddyserver/caddy/caddytls"
-	"github.com/caddyserver/caddy/telemetry"
+	"github.com/Unotechsoftware/caddy"
+	"github.com/Unotechsoftware/caddy/caddyfile"
+	"github.com/Unotechsoftware/caddy/caddyhttp/staticfiles"
+	"github.com/Unotechsoftware/caddy/caddytls"
+	"github.com/Unotechsoftware/caddy/telemetry"
 	"github.com/mholt/certmagic"
 )
 

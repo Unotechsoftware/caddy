@@ -36,8 +36,8 @@ import (
 
 	"crypto/tls"
 
-	"github.com/caddyserver/caddy/caddyfile"
-	"github.com/caddyserver/caddy/caddyhttp/httpserver"
+	"github.com/Unotechsoftware/caddy/caddyfile"
+	"github.com/Unotechsoftware/caddy/caddyhttp/httpserver"
 )
 
 var (
@@ -645,7 +645,7 @@ func (u *staticUpstream) healthCheck() {
 					return false
 				}
 				// TODO ReadAll will be replaced if deemed necessary
-				//      See https://github.com/caddyserver/caddy/pull/1691
+				//      See https://github.com/Unotechsoftware/caddy/pull/1691
 				buf, err := ioutil.ReadAll(r.Body)
 				if err != nil {
 					return true
