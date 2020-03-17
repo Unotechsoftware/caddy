@@ -23,11 +23,11 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/caddyserver/caddy/v2"
-	"github.com/caddyserver/caddy/v2/caddyconfig"
-	caddycmd "github.com/caddyserver/caddy/v2/cmd"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp/headers"
+	"github.com/Unotechsoftware/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2/caddyconfig"
+	caddycmd "github.com/Unotechsoftware/caddy/v2/cmd"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/headers"
 )
 
 func init() {

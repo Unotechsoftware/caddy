@@ -29,9 +29,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/caddyserver/caddy/v2"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp/headers"
+	"github.com/Unotechsoftware/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/headers"
 	"go.uber.org/zap"
 	"golang.org/x/net/http/httpguts"
 )
@@ -76,7 +76,7 @@ type Handler struct {
 	Upstreams UpstreamPool `json:"upstreams,omitempty"`
 
 	// TODO: figure out good defaults and write docs for this
-	// (see https://github.com/caddyserver/caddy/issues/1460)
+	// (see https://github.com/Unotechsoftware/caddy/issues/1460)
 	FlushInterval caddy.Duration `json:"flush_interval,omitempty"`
 
 	// Headers manipulates headers between Caddy and the backend.
@@ -248,7 +248,7 @@ func (h *Handler) Cleanup() error {
 		close(h.HealthChecks.Active.stopChan)
 	}
 
-	// TODO: Close keepalive connections on reload? https://github.com/caddyserver/caddy/pull/2507/files#diff-70219fd88fe3f36834f474ce6537ed26R762
+	// TODO: Close keepalive connections on reload? https://github.com/Unotechsoftware/caddy/pull/2507/files#diff-70219fd88fe3f36834f474ce6537ed26R762
 
 	// remove hosts from our config from the pool
 	for _, upstream := range h.Upstreams {
@@ -508,7 +508,7 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 	}
 
 	// TODO: there should be an option to return an error if the response
-	// matches some criteria; would solve https://github.com/caddyserver/caddy/issues/1447
+	// matches some criteria; would solve https://github.com/Unotechsoftware/caddy/issues/1447
 	// by allowing the backend to determine whether this server should treat
 	// a 400+ status code as an error -- but we might need to be careful that
 	// we do not affect the health status of the backend... still looking into

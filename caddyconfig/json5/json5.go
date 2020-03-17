@@ -17,7 +17,7 @@ package json5adapter
 import (
 	"encoding/json"
 
-	"github.com/caddyserver/caddy/v2/caddyconfig"
+	"github.com/Unotechsoftware/caddy/v2/caddyconfig"
 	"github.com/ilibs/json5"
 )
 

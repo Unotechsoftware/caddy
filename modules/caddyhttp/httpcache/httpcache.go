@@ -24,8 +24,8 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/caddyserver/caddy/v2"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
+	"github.com/Unotechsoftware/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp"
 	"github.com/golang/groupcache"
 )
 
@@ -38,7 +38,7 @@ func init() {
 // NOTE: This module is a work-in-progress. It is
 // not finished and is NOT ready for production use.
 // [We need your help to finish it! Please volunteer
-// in this issue.](https://github.com/caddyserver/caddy/issues/2820)
+// in this issue.](https://github.com/Unotechsoftware/caddy/issues/2820)
 // Until it is finished, this module is subject to
 // breaking changes.
 //

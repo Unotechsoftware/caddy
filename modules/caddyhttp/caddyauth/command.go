@@ -19,8 +19,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/caddyserver/caddy/v2"
-	caddycmd "github.com/caddyserver/caddy/v2/cmd"
+	"github.com/Unotechsoftware/caddy/v2"
+	caddycmd "github.com/Unotechsoftware/caddy/v2/cmd"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/scrypt"
 )
