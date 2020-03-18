@@ -445,7 +445,7 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 		return err
 	}
 
-	h.logger.Debug("upstream roundtrip",
+	h.logger.Info("upstream roundtrip",
 		zap.Object("request", caddyhttp.LoggableHTTPRequest{Request: req}),
 		zap.Object("headers", caddyhttp.LoggableHTTPHeader(res.Header)),
 		zap.Duration("duration", duration),
