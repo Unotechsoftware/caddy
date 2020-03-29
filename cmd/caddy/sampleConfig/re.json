@@ -1,0 +1,92 @@
+{
+	  "logging": {
+                "sink": {
+                        "writer": {
+                                "output":"file",
+                                "filename":"/var/log/caddy_sink.log",
+                                "roll":true,
+                                "roll_size_mb":5,
+                                "roll_gzip":true,
+                                "roll_keep":10,
+                                "roll_keep_days":10
+                        }
+                },
+                "logs": {
+                        "default": {
+                                "writer": {
+                                        "output":"file",
+                                        "filename":"/var/log/caddy_default.log",
+                                        "roll":true,
+                                        "roll_size_mb":5,
+                                        "roll_gzip":true,
+                                        "roll_keep":10,
+                                        "roll_keep_days":10
+                                },
+                                "encoder": {
+                                        "format":"json"
+                                },
+                                "level": "DEBUG"
+                        }
+                }
+        },
+
+	"apps": {
+		"http": {
+			"servers": {
+				"example": {
+					"listen": ["127.0.0.1:80"],
+					"routes": [
+						{
+							"match":[{"host":["a.ldap.example.com"]}],
+							"handle": [
+								{
+									"handler": "reverse_proxy",
+									"upstreams": [
+										{
+											"dial": "ldap.example.com:8635"
+										}
+									]
+								}
+							]
+						},
+						{
+							"match":[{"host":["b.ldap.example.com"]}],
+							"handle": [
+								{
+									"handler": "reverse_proxy",
+									"upstreams": [
+										{
+											"dial": "ldap.example.com:8443"
+										}],
+									 "transport": { "protocol":"http", "tls": {
+									 	"root_ca_pem_files":["/home/tuere/mycerts/myCA.pem"],
+										"client_certificate_file":"/home/tuere/mycerts/rp.ldap.example.com.crt",
+										"client_certificate_key_file":"/home/tuere/mycerts/rp.ldap.example.com.key",
+										"insecure_skip_verify": true
+									 }}
+
+								}
+							]
+						}
+					],
+					"automatic_https":{
+						"disable": true
+					}
+				}
+			}
+		},
+		"tls": {
+			"certificates":{
+				"load_files":[{
+					"certificate":"/home/tuere/mycerts/sso.ldap.example.com.crt",
+					"key":"/home/tuere/mycerts/sso.ldap.example.com.key",
+					"format":"pem",
+					"tags":["a"]
+				}
+				]
+			},
+      			"automation": {},
+      			"session_tickets": {}
+    		}	
+	}
+}
