@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/caddyserver/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2"
 	"go.uber.org/zap"
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/zapcore"

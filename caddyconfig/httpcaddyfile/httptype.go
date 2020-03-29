@@ -21,11 +21,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/caddyserver/caddy/v2"
-	"github.com/caddyserver/caddy/v2/caddyconfig"
-	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
-	"github.com/caddyserver/caddy/v2/modules/caddytls"
+	"github.com/Unotechsoftware/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2/caddyconfig"
+	"github.com/Unotechsoftware/caddy/v2/caddyconfig/caddyfile"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddytls"
 	"github.com/caddyserver/certmagic"
 )
 
@@ -605,7 +605,7 @@ func (st *ServerType) serversFromPairings(
 		// least have a matching connection policy, so here we append a
 		// catch-all/default policy if there isn't one already (it's
 		// important that it goes at the end) - see issue #3004:
-		// https://github.com/caddyserver/caddy/issues/3004
+		// https://github.com/Unotechsoftware/caddy/issues/3004
 		if !hasCatchAllTLSConnPolicy && (len(srv.TLSConnPolicies) > 0 || defaultSNI != "") {
 			srv.TLSConnPolicies = append(srv.TLSConnPolicies, &caddytls.ConnectionPolicy{DefaultSNI: defaultSNI})
 		}
@@ -734,7 +734,7 @@ func buildSubroute(routes []ConfigValue, groupCounter counter) (*caddyhttp.Subro
 // consolidateRoutes combines routes with the same properties
 // (same matchers, same Terminal and Group settings) for a
 // cleaner overall output.
-// FIXME: See caddyserver/caddy#3108
+// FIXME: See Unotechsoftware/caddy#3108
 func consolidateRoutes(routes caddyhttp.RouteList) caddyhttp.RouteList {
 	for i := 0; i < len(routes)-1; i++ {
 		if reflect.DeepEqual(routes[i].MatcherSetsRaw, routes[i+1].MatcherSetsRaw) &&

@@ -19,8 +19,8 @@ import (
 	"io"
 	"net"
 
-	"github.com/caddyserver/caddy/v2"
-	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
+	"github.com/Unotechsoftware/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2/caddyconfig/caddyfile"
 )
 
 func init() {

@@ -1,0 +1,68 @@
+{
+	  "logging": {
+                "sink": {
+                        "writer": {
+                                "output":"file",
+                                "filename":"/var/log/caddy_sink.log",
+                                "roll":true,
+                                "roll_size_mb":5,
+                                "roll_gzip":true,
+                                "roll_keep":10,
+                                "roll_keep_days":10
+                        }
+                },
+                "logs": {
+                        "default": {
+                                "writer": {
+                                        "output":"file",
+                                        "filename":"/var/log/caddy_default.log",
+                                        "roll":true,
+                                        "roll_size_mb":5,
+                                        "roll_gzip":true,
+                                        "roll_keep":10,
+                                        "roll_keep_days":10
+                                },
+                                "encoder": {
+                                        "format":"json"
+                                },
+                                "level": "DEBUG"
+                        }
+                }
+        },
+
+	"apps": {
+		"http": {
+			"servers": {
+				"example": {
+					"listen": ["127.0.0.1:443"],
+					"routes": [
+						{
+							"match":[{"host":["ldap.example.com"]}],
+							"handle": [
+								{
+									"handler": "static_response",
+									"body":"Hello, Unotech!"
+								}
+							]
+						}
+						
+					]					
+
+				}
+			}
+		},
+
+		"tls": {
+			"certificates":{
+				"load_files":[{
+					"certificate":"/home/tuere/mycerts/sso.ldap.example.com.crt",
+					"key":"/home/tuere/mycerts/sso.ldap.example.com.key",
+					"format":"pem",
+					"tags":["a","b"]
+				}]
+			},
+      			"automation": {},
+      			"session_tickets": {}
+    		}
+	}
+}

@@ -28,7 +28,7 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/alecthomas/chroma/formatters/html"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"

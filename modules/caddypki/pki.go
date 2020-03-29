@@ -17,7 +17,7 @@ package caddypki
 import (
 	"fmt"
 
-	"github.com/caddyserver/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2"
 	"github.com/smallstep/truststore"
 	"go.uber.org/zap"
 )

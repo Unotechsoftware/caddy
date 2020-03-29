@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/caddyserver/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2"
 	"github.com/caddyserver/certmagic"
 )
 
@@ -31,7 +31,7 @@ func init() {
 // CustomCertSelectionPolicy represents a policy for selecting the certificate
 // used to complete a handshake when there may be multiple options. All fields
 // specified must match the candidate certificate for it to be chosen.
-// This was needed to solve https://github.com/caddyserver/caddy/issues/2588.
+// This was needed to solve https://github.com/Unotechsoftware/caddy/issues/2588.
 type CustomCertSelectionPolicy struct {
 	SerialNumber        *big.Int           `json:"serial_number,omitempty"`
 	SubjectOrganization string             `json:"subject_organization,omitempty"`

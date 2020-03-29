@@ -1,0 +1,112 @@
+{
+	  "logging": {
+                "sink": {
+                        "writer": {
+                                "output":"file",
+                                "filename":"/var/log/caddy_sink.log",
+                                "roll":true,
+                                "roll_size_mb":5,
+                                "roll_gzip":true,
+                                "roll_keep":10,
+                                "roll_keep_days":10
+                        }
+                },
+                "logs": {
+                        "default": {
+                                "writer": {
+                                        "output":"file",
+                                        "filename":"/var/log/caddy_default.log",
+                                        "roll":true,
+                                        "roll_size_mb":5,
+                                        "roll_gzip":true,
+                                        "roll_keep":10,
+                                        "roll_keep_days":10
+                                },
+                                "encoder": {
+                                        "format":"json"
+                                },
+                                "level": "INFO"
+                        }
+                }
+        },
+
+	"apps": {
+		"http": {
+			"servers": {
+				"example": {
+					"listen": ["127.0.0.1:443"],
+					"routes": [
+						{
+							"match":[{"host":["rpapp2.example.com"]}],
+							"handle": [
+								{
+									"handler": "reverse_proxy",
+									"upstreams": [
+										{
+											"dial": "app1.example.com:8443"
+										}],
+									 "transport": { 
+										 "protocol":"http", 
+										 "tls": {
+									 	"root_ca_pem_files":["/home/tuere/mycerts/myCA.pem"],
+										"client_certificate_file":"/home/tuere/wildcard_certs/app1.example.com.crt",
+										"client_certificate_key_file":"/home/tuere/wildcard_certs/app1.example.com.key",
+										"insecure_skip_verify": true
+									 }}
+
+								}
+							]
+						},
+						{
+							 "match":[{"host":["rpapp1.example.com"]}],
+							 "handle": [
+								{
+									"handler":"reverse_proxy",
+									"upstreams": [{
+											"dial": "sih.gov.in:443"
+										}
+									],
+                                                         "transport": { 
+								 "protocol":"http", 
+								 "tls": {
+                                                                                "root_ca_pem_files":["/home/tuere/mycerts/myCA.pem"],
+                                                                                "client_certificate_file":"/home/tuere/mycerts/rp.ldap.example.com.crt",
+                                                                                "client_certificate_key_file":"/home/tuere/mycerts/rp.ldap.example.com.key",
+                                                                                "insecure_skip_verify": true
+                                                         	}
+							 }
+							}
+							]
+
+						}
+					],
+
+					"automatic_https":{
+						"disable": false,
+						"disable_redirects": false
+						
+					}
+				}
+			}
+		},
+		"tls": {
+			"certificates":{
+				"load_files":[{
+					"certificate":"/home/tuere/wildcard_certs/rpapp1.example.com.crt",
+					"key":"/home/tuere/wildcard_certs/rpapp1.example.com.key",
+					"format":"pem",
+					"tags":["a"]
+				},
+				{
+					"certificate":"/home/tuere/wildcard_certs/rpapp2.example.com.crt",
+					"key":"/home/tuere/wildcard_certs/rpapp2.example.com.key",
+					"format":"pem",
+					"tags":["b"]
+				}
+				]
+			},
+      			"automation": {},
+      			"session_tickets": {}
+    		}	
+	}
+}

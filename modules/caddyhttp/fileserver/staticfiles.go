@@ -30,8 +30,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/caddyserver/caddy/v2"
-	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
+	"github.com/Unotechsoftware/caddy/v2"
+	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp"
 )
 
 func init() {
@@ -178,7 +178,7 @@ func (fsrv *FileServer) ServeHTTP(w http.ResponseWriter, r *http.Request, next c
 	// if URL canonicalization is enabled, we need to enforce trailing
 	// slash convention: if a directory, trailing slash; if a file, no
 	// trailing slash - not enforcing this can break relative hrefs
-	// in HTML (see https://github.com/caddyserver/caddy/issues/2741)
+	// in HTML (see https://github.com/Unotechsoftware/caddy/issues/2741)
 	if fsrv.CanonicalURIs == nil || *fsrv.CanonicalURIs {
 		if implicitIndexFile && !strings.HasSuffix(r.URL.Path, "/") {
 			return redirect(w, r, r.URL.Path+"/")

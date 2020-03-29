@@ -1,4 +1,4 @@
-module github.com/caddyserver/caddy/v2
+module github.com/Unotechsoftware/caddy/v2
 
 go 1.14
 
@@ -6,6 +6,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.0.2
 	github.com/alecthomas/chroma v0.7.2-0.20200305040604-4f3623dce67a
 	github.com/andybalholm/brotli v1.0.0
+	github.com/caddyserver/caddy v1.0.5
 	github.com/caddyserver/certmagic v0.10.2
 	github.com/dustin/go-humanize v1.0.1-0.20200219035652-afde56e7acac
 	github.com/go-acme/lego/v3 v3.4.0
@@ -18,7 +19,6 @@ require (
 	github.com/manifoldco/promptui v0.7.0 // indirect
 	github.com/miekg/dns v1.1.28 // indirect
 	github.com/muhammadmuzzammil1998/jsonc v0.0.0-20200303171503-1e787b591db7
-	github.com/naoina/go-stringutil v0.1.0 // indirect
 	github.com/naoina/toml v0.1.1
 	github.com/smallstep/certificates v0.14.0-rc.5
 	github.com/smallstep/cli v0.14.0-rc.3

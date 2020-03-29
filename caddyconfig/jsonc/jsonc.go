@@ -17,7 +17,7 @@ package jsoncadapter
 import (
 	"encoding/json"
 
-	"github.com/caddyserver/caddy/v2/caddyconfig"
+	"github.com/Unotechsoftware/caddy/v2/caddyconfig"
 	"github.com/muhammadmuzzammil1998/jsonc"
 )
 
