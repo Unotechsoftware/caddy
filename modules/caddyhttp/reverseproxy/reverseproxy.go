@@ -17,12 +17,16 @@ package reverseproxy
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/net/html"
 	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -451,6 +455,163 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 		zap.Duration("duration", duration),
 		zap.Int("status", res.StatusCode),
 	)
+
+
+	h.logger.Info("upstream requestURI",
+		zap.String("Raw Path", req.RequestURI),
+		zap.String("Method", req.Method),
+	)
+
+	// MY CUSTOM CODE START
+
+
+
+	var resp *http.Response
+
+	if 1 == 2 && req.RequestURI == "/viewIdeasEval" && req.Method == "GET"{
+
+		h.logger.Info("SIGNIN Request for SIH 2020",
+			zap.String("Raw Path", req.RequestURI),
+			zap.String("MEthod", req.Method))
+
+		caCert, err := ioutil.ReadFile("/home/tuere/wildcard_certs/myCA.pem")
+		if err != nil {
+			h.logger.Error("Error in  reading certificates ",
+				zap.String("Error Message",err.Error()))
+		}
+		caCertPool := x509.NewCertPool()
+		caCertPool.AppendCertsFromPEM(caCert)
+
+		client := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					RootCAs:      caCertPool,
+				},
+			},
+		}
+
+		req1, err := http.Get("https://sih.gov.in/signin")
+		if err != nil {
+			h.logger.Error("Error in making GET requests ",
+				zap.String("Error Message",err.Error()))
+		}
+
+		h.logger.Info("Headers for SIH GOV IN ",
+			zap.Object("Header Data",caddyhttp.LoggableHTTPHeader(req1.Header)))
+
+		var token_string string
+
+
+		tokenizer := html.NewTokenizer(req1.Body)
+		for {
+			tokenType := tokenizer.Next()
+
+			if tokenType == html.ErrorToken {
+				err := tokenizer.Err()
+				if err == io.EOF {
+					//end of the file, break out of the loop
+					break
+				}
+				fmt.Println(tokenizer.Err())
+			}
+			//process the token according to the token type...
+			if tokenType == html.StartTagToken {
+				tokenVal := ""
+				token := tokenizer.Token()
+				if "input" == token.Data {
+					for i:=0; i< len(token.Attr); i++{
+						if token.Attr[i].Key == "name"{
+							if token.Attr[i].Val == "_token" {
+								tokenVal = "abc"
+							}
+						}
+
+						if tokenVal == "abc" {
+							if token.Attr[i].Key == "value" {
+								token_string = token.Attr[i].Val
+								break
+							}
+						}
+					}
+				}
+			}
+		}
+
+		h.logger.Info("Token Value for SIH 2020",
+			zap.String("token_value", token_string),
+			zap.String("Raw Path", req.RequestURI))
+
+		formData := url.Values{
+			"email": {"abhishek.kulkarni@unotechsoft.com"},
+			"password": {"sih2020"},
+			"role": {"EVALUATOR"},
+			"_token": {token_string},
+		}
+
+
+		/*resp, err = client.PostForm("https://rpapp1.example.com/signin", formData)
+		if err != nil {
+			h.logger.Error("Error in making POST requests ",
+				zap.String("Error Message",err.Error()))
+		}*/
+
+		postRequest, err := http.NewRequest("POST", "https://rpapp1.example.com/signin", strings.NewReader(formData.Encode()))
+		if err != nil {
+			h.logger.Error("Error in making POST requests ",
+				zap.String("Error Message",err.Error()))
+		}
+
+		postRequest.Header.Set("Cache-Control", "max-age=0")
+		postRequest.Header.Set("Origin", "https://rpapp1.example.com")
+		postRequest.Header.Set("Sec-Fetch-Mode", "navigate")
+		postRequest.Header.Set("Sec-Fetch-User", "?1")
+		postRequest.Header.Set("Referer", "https://rpapp1.example.com/signin")
+		postRequest.Header.Set("Sec-Fetch-Dest", "document")
+		postRequest.Header.Set("User-Agent","Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
+
+
+		postRequest.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+		postRequest.Header.Set("Upgrade-Insecure-Requests", "1")
+		postRequest.Header.Set("Sec-Fetch-Site","same-origin")
+		postRequest.Header.Set("Accept-Language", "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7")
+		postRequest.Header.Set("Accept-Encoding", "gzip, deflate, br")
+		postRequest.Header.Set("Content-Type","application/x-www-form-urlencoded")
+		postRequest.Header.Set("Cookie", "__mtwr")
+		// NOw setting dynamic values
+
+
+		// End of setting dynamic values
+
+		h.logger.Info("I was here")
+		h.logger.Info("POST REUQEST HEADERS",
+			zap.Object("Request for POST che headers", caddyhttp.LoggableHTTPHeader(postRequest.Header)),
+		)
+		h.logger.Info("I was also here")
+
+		resp, err = client.Do(postRequest)
+
+
+
+		res = resp
+
+
+
+		/*_, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			h.logger.Error("Error in reading POST response Body ",
+				zap.String("Error Message",err.Error()))
+		}
+		*/
+		defer resp.Body.Close()
+		defer req1.Body.Close()
+	}
+
+	h.logger.Info("Response length",
+		zap.Int64("Content-Length",res.ContentLength),
+	)
+
+	// MY CUSTOM CODE END
+
 
 	// update circuit breaker on current conditions
 	if di.Upstream.cb != nil {
