@@ -1,0 +1,30 @@
+{
+    "sink": {
+      "writer": { 
+        "output":"file",
+        "filename":"/var/log/caddy_sink.log",
+        "roll":true,
+        "roll_size_mb":5,
+        "roll_gzip":true,
+        "roll_keep":10,
+        "roll_keep_days":10   
+      }
+    },
+    "logs": {
+      "default": {
+        "writer": {
+          "output":"file",
+          "filename":"/var/log/caddy_default.log",
+          "roll":true,
+          "roll_size_mb":5,
+          "roll_gzip":true,
+          "roll_keep":10,
+          "roll_keep_days":10
+        },
+        "encoder": {
+          "format":"json"
+        },
+        "level": "INFO"
+      }
+    }
+}

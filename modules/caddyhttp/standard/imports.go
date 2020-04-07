@@ -13,6 +13,7 @@ import (
 	_ "github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/httpcache"
 	_ "github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/requestbody"
 	_ "github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/reverseproxy"
+	_ "github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/iprestrictedreverseproxy"
 	_ "github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/reverseproxy/fastcgi"
 	_ "github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/rewrite"
 	_ "github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/templates"
