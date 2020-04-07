@@ -1,0 +1,11 @@
+{
+        "admin":{
+                "disabled":false,
+                "listen":"0.0.0.0:2020",
+                "enforce_origin":false,
+                "config":{
+                        "persist":true
+                }
+        }
+}
+
