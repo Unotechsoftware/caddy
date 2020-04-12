@@ -1,0 +1,133 @@
+{
+  "admin": {
+    "config": {
+      "persist": true
+    },
+    "disabled": false,
+    "enforce_origin": false,
+    "listen": "0.0.0.0:2020"
+  },
+  "apps": {
+    "http": {
+      "servers": {
+        "example": {
+          "listen": [
+            "0.0.0.0:443"
+          ],
+          "routes": [
+            {
+              "handle": [
+                {
+                  "error": "Request from invalid IP Range",
+                  "handler": "error",
+                  "status_code": "403"
+                }
+              ],
+              "match": [
+                {
+                  "remote_ip": {
+                    "ranges": [
+                      "213.51.233.182/16"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "handle": [
+                {
+                  "handler": "reverse_proxy",
+                  "transport": {
+                    "protocol": "http"
+                  },
+                  "upstreams": [
+                    {
+                      "dial": "139.59.74.216:8090"
+                    }
+                  ]
+                }
+              ],
+              "match": [
+                {
+                  "host": [
+                    "a.hostonefivenine.com"
+                  ]
+                }
+              ]
+            },
+            {
+              "handle": [
+                {
+                  "handler": "reverse_proxy",
+                  "transport": {
+                    "protocol": "http",
+                    "tls": {}
+                  },
+                  "upstreams": [
+                    {
+                      "dial": "sih.gov.in:443"
+                    }
+                  ]
+                }
+              ],
+              "match": [
+                {
+                  "host": [
+                    "b.hostonefivenine.com"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "tls": {
+      "automation": {},
+      "certificates": {
+        "load_files": [
+          {
+            "certificate": "/home/tuere/wildcard_certs/wildcard.hostonefivenine.com.crt",
+            "format": "pem",
+            "key": "/home/tuere/wildcard_certs/wildcard.hostonefivenine.com.key",
+            "tags": [
+              "b"
+            ]
+          }
+        ]
+      },
+      "session_tickets": {}
+    }
+  },
+  "logging": {
+    "logs": {
+      "default": {
+        "encoder": {
+          "format": "json"
+        },
+        "level": "INFO",
+        "writer": {
+          "filename": "/var/log/caddy_default.log",
+          "output": "file",
+          "roll": true,
+          "roll_gzip": true,
+          "roll_keep": 10,
+          "roll_keep_days": 10,
+          "roll_size_mb": 5
+        }
+      }
+    },
+    "sink": {
+      "writer": {
+        "filename": "/var/log/caddy_sink.log",
+        "output": "file",
+        "roll": true,
+        "roll_gzip": true,
+        "roll_keep": 10,
+        "roll_keep_days": 10,
+        "roll_size_mb": 5
+      }
+    }
+  }
+}
+
