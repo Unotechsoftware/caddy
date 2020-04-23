@@ -37,10 +37,22 @@ import (
 	"github.com/Unotechsoftware/caddy/v2/modules/caddyhttp/headers"
 	"go.uber.org/zap"
 	"golang.org/x/net/http/httpguts"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
+
+var Session *mgo.Session
 
 func init() {
 	caddy.RegisterModule(Handler{})
+}
+
+type Msg struct{
+	Salt string
+	Iv string
+	Login string
+	Captcha string
+	Password string
 }
 
 // Handler implements a highly configurable and production-ready reverse proxy.
@@ -460,11 +472,16 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 		var err error
 
 		urlData := url.Values{}
-		urlData.Set("salt", "56464a60130eed8d7d45d6704653d850")
-		urlData.Set("iv", "e09c01b7b41a62255347400f92afbceb")
-		urlData.Set("login", "abhishek.kulkarni")
-		urlData.Set("password", "6CxnYWrqZdyJFbgv192Zqw==")
-		urlData.Set("captcha", "x2thiq")
+
+		login := "abhishek.kulkarni"
+		salt,iv,password, captcha := readValuesFromMongoDB(login)
+
+
+		urlData.Set("salt", salt)
+		urlData.Set("iv", iv)
+		urlData.Set("login", login)
+		urlData.Set("password", password)
+		urlData.Set("captcha", captcha)
 
 
 
@@ -635,6 +652,41 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 	}
 
 	return nil
+}
+
+func readValuesFromMongoDB(login string) (string, string, string, string) {
+	info := &mgo.DialInfo{
+		Addrs:    []string{"139.59.74.216:28195"},
+		Database: "accessgateway",
+		Username: "gatewayadmin",
+		Password: "redhat",
+	}
+
+
+	// connect to mongo
+	s, err := mgo.DialWithInfo(info)
+	if err != nil {
+		return "","","",""
+	}
+	s.SetMode(mgo.Monotonic, true)
+
+	Session = s
+
+	sessionCopy := Session.Copy()
+	defer sessionCopy.Close()
+
+	// get
+	var coll = sessionCopy.DB("accessgateway").C("users")
+	var msg1 = &Msg{}
+	err = coll.Find(bson.M{"login": login}).One(msg1)
+	if err != nil {
+		return "", "", "", ""
+	}
+
+	//salt,iv,password, captcha
+	return msg1.Salt, msg1.Iv, msg1.Password, msg1.Captcha
+
+
 }
 
 

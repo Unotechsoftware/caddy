@@ -6,7 +6,6 @@ require (
 	github.com/Masterminds/sprig/v3 v3.0.2
 	github.com/alecthomas/chroma v0.7.2-0.20200305040604-4f3623dce67a
 	github.com/andybalholm/brotli v1.0.0
-	github.com/caddyserver/caddy v1.0.5
 	github.com/caddyserver/certmagic v0.10.2
 	github.com/dustin/go-humanize v1.0.1-0.20200219035652-afde56e7acac
 	github.com/go-acme/lego/v3 v3.4.0
@@ -17,8 +16,9 @@ require (
 	github.com/klauspost/cpuid v1.2.3
 	github.com/lucas-clemente/quic-go v0.15.2
 	github.com/manifoldco/promptui v0.7.0 // indirect
-	github.com/miekg/dns v1.1.28 // indirect
+	github.com/miekg/dns v1.1.28
 	github.com/muhammadmuzzammil1998/jsonc v0.0.0-20200303171503-1e787b591db7
+	github.com/naoina/go-stringutil v0.1.0 // indirect
 	github.com/naoina/toml v0.1.1
 	github.com/smallstep/certificates v0.14.0-rc.5
 	github.com/smallstep/cli v0.14.0-rc.3
@@ -29,6 +29,7 @@ require (
 	go.uber.org/zap v1.14.0
 	golang.org/x/crypto v0.0.0-20200311171314-f7b00557c8c4
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
+	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/square/go-jose.v2 v2.4.1 // indirect
 	gopkg.in/yaml.v2 v2.2.8
