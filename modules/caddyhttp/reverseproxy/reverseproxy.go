@@ -17,15 +17,12 @@ package reverseproxy
 import (
 	"bytes"
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
-	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -453,80 +450,7 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 	var res *http.Response
 	var duration time.Duration
 
-	if strings.Contains(req.RequestURI, "/idp/login.html") && req.Method == "GET" {
 
-		var finalUrl string
-		finalUrlArr := strings.Split(req.RequestURI,"%2F")
-
-		if finalUrlArr == nil{
-			finalUrl = "selfservice"
-		} else {
-			if len(finalUrlArr) < 2 {
-				finalUrl = "selfservice"
-			} else {
-				finalUrl = finalUrlArr[1]
-			}
-		}
-
-
-		var err error
-
-		urlData := url.Values{}
-
-		login := "abhishek.kulkarni"
-		salt,iv,password, captcha := readValuesFromMongoDB(login)
-
-
-		urlData.Set("salt", salt)
-		urlData.Set("iv", iv)
-		urlData.Set("login", login)
-		urlData.Set("password", password)
-		urlData.Set("captcha", captcha)
-
-
-
-
-		caCert, err := ioutil.ReadFile("/opt/myCA.pem")
-		if err != nil {
-			return err
-		}
-		caCertPool := x509.NewCertPool()
-		caCertPool.AppendCertsFromPEM(caCert)
-
-		c := &http.Client{
-			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{
-					RootCAs:      caCertPool,
-				},
-			},
-		}
-
-		req, err := http.NewRequest("POST", "https://iam-1591.hostonefivenine.com/idp/login.html",
-			strings.NewReader(urlData.Encode()))
-		if err != nil {
-			return err
-		}
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-		req.Header.Set("Cookie","JSESSIONID=DA97C96C4B757F4FCC2B07DAE698D4AD;" +
-			" _ga=GA1.2.1117204982.1585321976; _gcl_au=1.1.332255093.1586694890;" +
-			" _fbp=fb.1.1586694923846.336228863; OPENIAM_LOCALE=undefined;" +
-			" IDENTITY_COOKIES=4180c87c4e881a8d947ac8f3c627ccfa286a1d096f6da69f681435f72b850ead6b545458e7d0a5a00357e95a7677e040;" +
-			" CAPTCHA_COOKIES=26cc2c718df76b1c9adb85c01aa3fe1433cd8578f158bcb89adcd018f58f07f7704596867abc6358")
-
-		res, err = c.Do(req)
-
-
-		if err != nil {
-			h.logger.Error("OOpsiev2",
-				zap.String("error_message", err.Error()),
-			)
-		}
-
-		res.StatusCode = 302
-		res.Header.Set("Location","/"+finalUrl)
-
-	} else {
 		var err error
 		h.directRequest(req, di)
 		start := time.Now()
@@ -536,7 +460,7 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 			return err
 		}
 
-	}
+
 	// do the round-trip
 
 	h.logger.Info("upstream roundtrip",
@@ -612,7 +536,7 @@ func (h *Handler) reverseProxy(rw http.ResponseWriter, req *http.Request, di Dia
 
 	rw.WriteHeader(res.StatusCode)
 
-	var err error
+
 
 	err = h.copyResponse(rw, res.Body, h.flushInterval(req, res))
 	if err != nil {
